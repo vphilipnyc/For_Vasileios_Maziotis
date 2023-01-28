@@ -32,6 +32,8 @@ public class PatientInitializer implements ApplicationRunner {
                 .lastName("Smith")
                 .email("smith@smith.com")
                 .amka("12323231313-2223")
+                .phone("(212) 222-2222")
+                .city("San Diego")
                 .build();
         john.setDrugs(Set.of(Objects.requireNonNull(drugRepository.findById(1L).orElse(null))));
         Patient mary = Patient.builder()
@@ -39,6 +41,8 @@ public class PatientInitializer implements ApplicationRunner {
                 .lastName("Kotsikopoulos")
                 .email("mary@mary.com")
                 .amka("92323234413-2223")
+                .phone("(223) 222-2222")
+                .city("Athens")
                 .build();
         mary.setDrugs(Set.of(Objects.requireNonNull(drugRepository.findById(2L).orElse(null))));
         Patient raj = Patient.builder()
@@ -46,6 +50,8 @@ public class PatientInitializer implements ApplicationRunner {
                 .lastName("Kapoor")
                 .email("raj@raj.com")
                 .amka("88323231313-2223")
+                .phone("(124) 222-2222")
+                .city("New Delhi")
                 .build();
         raj.setDrugs(Set.of(Objects.requireNonNull(drugRepository.findById(3L).orElse(null))));
         patientRepository.saveAll(Set.of(john, mary, raj));
