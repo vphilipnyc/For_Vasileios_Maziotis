@@ -28,7 +28,7 @@ public class PatientController {
         this.drugService = drugService;
     }
 
-    //** THESE WORK **//
+    //** THESE WORK.  Try the first one. **//
     @GetMapping("/patients")
     public String getAllPatients(Model model) {
         model.addAttribute("patientList", patientService.findAll());
@@ -50,7 +50,7 @@ public class PatientController {
                                         BindingResult result) {
         if (result.hasErrors()) {
             log.debug("Page has errors");
-            return "patientFormEdit?" + patientId;
+            return "patientFormEdit";
         }
         patientService.save(patient);
         return "redirect:/patients";
