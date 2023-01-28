@@ -14,7 +14,7 @@
 </head>
 
 <body>
-<form th:action="@{/prescribeDrugs/{id}(id = ${patient.id})}" method="post" th:object="${patient}">
+<form th:action="@{/prescribed}" method="post" th:object="${patient}">
 
     <div class="container">
         <div class="row">
@@ -62,8 +62,8 @@
 
                         <label class="mb-2">
                             Symptoms: <input id="symptoms" class="form-control" type="text"
-                                                             th:name="symptoms"
-                                                             required/>
+                                             th:name="symptoms"
+                                             required/>
                         </label>
                         <p th:if="${!#strings.isEmpty(errorMessage)}"
                            class="alert alert-danger" role="alert">
@@ -130,7 +130,7 @@
         </div>
         <div class="row">
             <div class="col-lg-12 col-12 mt-2">
-                <input type="hidden" th:field="*{id}" /> <!--Need to make sure the patient is updated -->
+                <input type="hidden" th:field="*{id}"/> <!--Need to make sure the patient is updated -->
                 <input class="btn btn-primary btn-block" type="submit" value="Update Patient"/>
             </div>
         </div>

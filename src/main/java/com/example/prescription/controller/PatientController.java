@@ -45,7 +45,7 @@ public class PatientController {
         return "patientFormEdit";
     }
 
-    @PostMapping("/prescribeDrugs/{patientId}")
+    @PostMapping("/prescribed")
     public String prescriptionForm(@Valid @ModelAttribute("patient") Patient patient,
                                    BindingResult result) {
         if (result.hasErrors()) {
