@@ -2,9 +2,11 @@ package com.example.prescription.controller;
 
 import com.example.prescription.model.Drug;
 import com.example.prescription.model.Patient;
+import com.example.prescription.repository.PatientRepository;
 import com.example.prescription.service.DrugService;
 import com.example.prescription.service.PatientService;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,14 +22,17 @@ import java.util.Optional;
 @Controller
 @Slf4j
 public class PatientController {
+    private final PatientRepository patientRepository;
 
     private final PatientService patientService;
     private final DrugService drugService;
 
     public PatientController(PatientService patientService,
-                             DrugService drugService) {
+                             DrugService drugService,
+                             PatientRepository patientRepository) {
         this.patientService = patientService;
         this.drugService = drugService;
+        this.patientRepository = patientRepository;
     }
 
     @GetMapping("/patients")
@@ -76,12 +81,16 @@ public class PatientController {
 
     @GetMapping("/prescribeDrugs/{patientId}")
     public String prescribeDrugs(@PathVariable("patientId") Long id, Model model) {
-        Optional<Patient> patient = patientService.findById(id);
-        model.addAttribute("patient", patient);
+        Optional<Patient> patientOptional = patientService.findById(id);
+        patientOptional.ifPresent(patient -> {
+            Hibernate.initialize(patient);
+            Hibernate.initialize(patient.getDrugs());
+            model.addAttribute("patient", patient);
+        });
         model.addAttribute("drugs", drugService.findAll());
         return "patientFormEdit";
     }
-
+/*
     @PostMapping("/prescribeDrugs/Patient/{patientId}")
     public String prescribePatientDrugs(@Valid Patient patient,
                                         @PathVariable(value = "patientId") Long patientId,
@@ -111,4 +120,5 @@ public class PatientController {
         }
         return "redirect:/allPatients";
     }
+    */
 }

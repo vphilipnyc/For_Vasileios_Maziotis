@@ -20,11 +20,11 @@
 </head>
 
 <body>
-<form th:action="@{/prescribeDrugs/Patient/{id}(id = ${patient.id})}" method="post" th:object="${patient}">
+<form th:action="@{/prescribeDrugs/patient/{id}(id = ${patient.id})}" method="post" th:object="${patient}">
 
     <div class="container">
         <div class="row">
-            <div class="col-lg-12 col-12 text-center mb-5">
+            <div class="col-lg-12 col-12 text-center mt-5 mb-5">
                 <h1>Electronic Prescription Form</h1>
             </div>
         </div>
@@ -35,12 +35,12 @@
                         <h5 class="card-title">Patient Identification</h5>
                         <div class="card-text">
                             <label>
-                                Patient ID: <span id="patient_id" th:name="patient_id">[Patient ID]</span>
-                                AMKA: <span id="amka" th:value="${patient.amka}">[AMKA]</span>
+                                Name: <span th:text="${patient.firstName}">[First Name]</span> <span
+                                    th:text="${patient.lastName}">[Last Name]</span>
                             </label>
                             <label>
-                                First Name: <span th:value="${patient.firstName}">[First Name]</span>
-                                Surname: <span th:value="${patient.lastName}">[Surname]</span>
+                                Patient ID: <span th:text="${patient.id}">[Patient ID]</span>
+                                AMKA: <span id="amka" th:text="${patient.amka}">[AMKA]</span>
                             </label>
                             <div class="form-group">
                                 <label for="emailLabel">Email:</label>
@@ -76,16 +76,19 @@
                             <span th:text="${errorMessage}">* This field is required</span>
                         </p>
                         <label>
-                            Drug
+                            Choose a Drug
                             <select name="drugs">
-                                <option th:each="drug : ${drugList}"
-                                        th:text="${drug}">
+                                <option th:each="drug : ${drugs}"
+                                        th:text="${drug.name}">
                             </select>
                         </label>
                         <p th:if="${!#strings.isEmpty(errorMessage)}"
                            class="alert alert-danger" role="alert">
                             <span th:text="${errorMessage}">* This field is required</span>
                         </p>
+                        Currently Prescribed:
+                        <th:block th:each="prescribed : ${patient.drugs}"
+                                  th:text="${prescribed.name}">[currently prescribed]</th:block>
                     </div>
                 </div>
                 <div class="card border-0">
