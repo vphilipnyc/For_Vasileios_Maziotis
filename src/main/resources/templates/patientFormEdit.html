@@ -20,7 +20,7 @@
 </head>
 
 <body>
-<form th:action="@{/prescribeDrugs/patient/{id}(id = ${patient.id})}" method="post" th:object="${patient}">
+<form th:action="@{/prescribeDrugs/{id}(id = ${patient.id})}" method="post" th:object="${patient}">
 
     <div class="container">
         <div class="row">
@@ -66,29 +66,33 @@
                     <div class="card-body">
                         <h5 class="card-title">Drug Information</h5>
 
-                        <label>
-                            <span>Symptoms: </span><input id="symptoms" type="text"
-                                                          th:name="symptoms"
-                                                          required/>
+                        <label class="mb-2">
+                            Symptoms: <input id="symptoms" class="form-control" type="text"
+                                                             th:name="symptoms"
+                                                             required/>
                         </label>
                         <p th:if="${!#strings.isEmpty(errorMessage)}"
                            class="alert alert-danger" role="alert">
                             <span th:text="${errorMessage}">* This field is required</span>
                         </p>
-                        <label>
-                            Choose a Drug
-                            <select name="drugs">
-                                <option th:each="drug : ${drugs}"
-                                        th:text="${drug.name}">
+
+                        <label class="mb-2" for="dropDownList">
+                            <select th:field="*{drugs}" class="form-control" id="dropDownList">
+                                <option value="0">Choose a Drug</option>
+                                <option th:each="drug : ${allDrugs}" th:value="${drug.id}" th:text="${drug.name}">[Drug
+                                    name]
+                                </option>
                             </select>
                         </label>
                         <p th:if="${!#strings.isEmpty(errorMessage)}"
                            class="alert alert-danger" role="alert">
                             <span th:text="${errorMessage}">* This field is required</span>
                         </p>
-                        Currently Prescribed:
-                        <th:block th:each="prescribed : ${patient.drugs}"
-                                  th:text="${prescribed.name}">[currently prescribed]</th:block>
+                        <p>Currently Prescribed:
+                            <th:block th:each="prescribed : ${patient.drugs}"
+                                      th:text="${prescribed.name}">[currently prescribed]
+                            </th:block>
+                        </p>
                     </div>
                 </div>
                 <div class="card border-0">
