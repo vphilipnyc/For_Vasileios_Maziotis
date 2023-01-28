@@ -1,38 +1,27 @@
 package com.example.prescription.controller;
 
-import com.example.prescription.model.Drug;
 import com.example.prescription.model.Patient;
-import com.example.prescription.repository.PatientRepository;
 import com.example.prescription.service.DrugService;
 import com.example.prescription.service.PatientService;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Hibernate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.Optional;
 
 @Controller
 @Slf4j
 public class PatientController {
-    private final PatientRepository patientRepository;
-
     private final PatientService patientService;
     private final DrugService drugService;
 
     public PatientController(PatientService patientService,
-                             DrugService drugService,
-                             PatientRepository patientRepository) {
+                             DrugService drugService) {
         this.patientService = patientService;
         this.drugService = drugService;
-        this.patientRepository = patientRepository;
     }
 
     @GetMapping("/patients")
@@ -40,13 +29,12 @@ public class PatientController {
         model.addAttribute("patientList", patientService.findAll());
         return "patients";
     }
-
     @GetMapping("/newPatient")
     public String register(Model model) {
         Patient patient = Patient.builder()
                 .firstName("Vasileios")
                 .lastName("Maziotis")
-                .build();
+                .build(); //test person
         model.addAttribute("patient", patient);
         model.addAttribute("drugs", drugService.findAll());
         return "patientForm";
@@ -56,13 +44,6 @@ public class PatientController {
     public String savePatient(Patient patient) {
         patientService.save(patient);
         return "redirect:/allPatients";
-    }
-
-    @GetMapping("/editPatient/{id}")
-    public String editPatient(@PathVariable(value = "id") Long id,
-                              Model model) {
-        model.addAttribute("patient", patientService.findById(id));
-        return "patientFormEditToUpdate";
     }
 
     @PostMapping("/updatePatient/{id}")
@@ -82,11 +63,7 @@ public class PatientController {
     @GetMapping("/prescribeDrugs/{patientId}")
     public String prescribeDrugs(@PathVariable("patientId") Long id, Model model) {
         Optional<Patient> patientOptional = patientService.findById(id);
-        patientOptional.ifPresent(patient -> {
-            Hibernate.initialize(patient);
-            Hibernate.initialize(patient.getDrugs());
-            model.addAttribute("patient", patient);
-        });
+        patientOptional.ifPresent(patient -> model.addAttribute("patient", patient));
         model.addAttribute("drugs", drugService.findAll());
         return "patientFormEdit";
     }
