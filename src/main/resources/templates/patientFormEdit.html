@@ -104,7 +104,7 @@
                         </div>
                         <div class="input-group mb-2">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">Doctor Signature</span>
+                                <span class="input-group-text">Doctor Name</span>
                             </div>
                             <textarea class="form-control" id="doctorSignature" th:name="doctorsName" required
                                       aria-label="Doctor Signature"></textarea>
@@ -130,6 +130,7 @@
         </div>
         <div class="row">
             <div class="col-lg-12 col-12 mt-2">
+                <input type="hidden" th:field="*{id}" /> <!--Need to make sure the patient is updated -->
                 <input class="btn btn-primary btn-block" type="submit" value="Update Patient"/>
             </div>
         </div>

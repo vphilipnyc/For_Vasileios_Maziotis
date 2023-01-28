@@ -1,5 +1,6 @@
 package com.example.prescription.controller;
 
+import com.example.prescription.model.Drug;
 import com.example.prescription.model.Patient;
 import com.example.prescription.service.DrugService;
 import com.example.prescription.service.PatientService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 @Slf4j
@@ -44,15 +46,31 @@ public class PatientController {
     }
 
     @PostMapping("/prescribeDrugs/{patientId}")
-    public String prescribePatientDrugs(@Valid Patient patient,
-                                        @PathVariable(value = "patientId") Long patientId,
-                                        @ModelAttribute(value = "drugs") Long drugId,
-                                        BindingResult result) {
+    public String prescriptionForm(@Valid @ModelAttribute("patient") Patient patient,
+                                   BindingResult result) {
         if (result.hasErrors()) {
             log.debug("Page has errors");
             return "patientFormEdit";
         }
-        patientService.save(patient);
+
+        //there is likely a better way to do this, but for the sake of speed:
+        Optional<Patient> patientOptional = patientService.findById(patient.getId());
+        patientOptional.ifPresent(patientFromRepo -> {
+            patientFromRepo.setEmail(patient.getEmail());
+            patientFromRepo.setPhone(patient.getPhone());
+            patientFromRepo.setCity(patient.getCity());
+
+            patientFromRepo.setSymptoms(patient.getSymptoms());
+            Set<Drug> currentlyPrescribed = patientFromRepo.getDrugs();
+            currentlyPrescribed.addAll(patient.getDrugs());
+            patientFromRepo.setDrugs(currentlyPrescribed);
+
+            patientFromRepo.setPharmacy(patient.getPharmacy());
+            patientFromRepo.setDoctorsName(patient.getDoctorsName());
+            patientFromRepo.setMessage(patient.getMessage());
+
+            patientService.save(patientFromRepo);
+        });
         return "redirect:/patients";
     }
 
