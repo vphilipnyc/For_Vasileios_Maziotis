@@ -76,7 +76,7 @@ public class PatientController {
 
     //** THESE ARE FOR YOU TO IMPLEMENT. **//
     //Make the naming consistent on your mappings!
-    //Use either ModelAndView or just return the String.  It's confusing mizing them.
+    //Use either ModelAndView or just return the String.  It's confusing mixing them.
     //Spring will automatically convert objects of primitive types (like Long) as a method parameter.
     @GetMapping("/patient/create")
     public String register(Model model) {
