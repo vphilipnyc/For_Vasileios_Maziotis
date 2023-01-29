@@ -6,7 +6,7 @@ https://stackoverflow.com/questions/75267546/when-i-put-the-list-with-the-specif
 
 To run, use:
 
-./gradleW bootRun
+./gradlew bootRun
 
 
 This project contains what you should need to update a patient and add drugs, and give you an idea how to structure the code better.  Form validation/error messages are left for you to do, as are some of the other methods in the controller.
