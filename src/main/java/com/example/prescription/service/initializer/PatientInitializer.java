@@ -54,6 +54,16 @@ public class PatientInitializer implements ApplicationRunner {
                 .city("New Delhi")
                 .build();
         raj.setDrugs(Set.of(Objects.requireNonNull(drugRepository.findById(3L).orElse(null))));
-        patientRepository.saveAll(Set.of(john, mary, raj));
+        Patient candice = Patient.builder()
+                .firstName("Candice")
+                .lastName("O'Malley")
+                .email("candy@candy.com")
+                .amka("32143455-2223")
+                .phone("(555) 555-5553")
+                .city("Dublin")
+                .build();
+        candice.setDrugs(Set.of(Objects.requireNonNull(drugRepository.findById(3L).orElse(null))));
+
+        patientRepository.saveAll(Set.of(john, mary, raj, candice));
     }
 }

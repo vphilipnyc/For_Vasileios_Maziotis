@@ -25,8 +25,8 @@
         </div>
     </div>
 
-    <table style="width: 100%">
-        <tr th:each="patient : ${patientList}">
+    <div class="row">
+        <div class="col-xl-3" th:each="patient : ${patientList}">
             <div class="card mr-2 mt-2 ml-2 mb-2"
                  style="width: 15rem; display: inline-block">
                 <div class="card-body">
@@ -55,7 +55,7 @@
                        th:href="@{/prescribeDrugs/{id}(id = ${patient.id})}">Add Prescription</a>
                 </div>
             </div>
-        </tr>
-    </table>
+        </div>
+    </div>
 </div>
 </body>
